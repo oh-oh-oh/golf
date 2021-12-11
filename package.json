@@ -4,7 +4,8 @@
   "description": "",
   "main": "server/index.ts",
   "scripts": {
-    "build": "echo \"BUILD\"",
+    "build": "yarn build:server",
+    "build:server": "rm -rf ./dist/server && yarn codegen && tsc --project ./server",
     "codegen": "./codegen/run.sh",
     "dev": "yarn codegen && yarn nodemon -r tsconfig-paths/register -r dotenv/config ./server/index.ts",
     "test": "echo \"TEST\""

@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "target": "es2020",
+    "module": "commonjs",
+    "sourceMap": true,
+    "outDir": "../dist/server",
+    "rootDir": "./",
+    "baseUrl": "./",
+    "removeComments": true,
+    "strict": true,
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "useUnknownInCatchVariables": false,
+    "resolveJsonModule": true,
+    "forceConsistentCasingInFileNames": true,
+    "plugins": [
+      // {
+      //   "transform": "../scripts/inject-type.ts",
+      //   "type": "raw"
+      // }
+    ],
+    "paths": {
+      "@/server/*": ["*"],
+    },
+  },
+  "exclude": ["**/*.spec.ts", "**/*.test.ts", "**/*.mock.ts"]
+}
