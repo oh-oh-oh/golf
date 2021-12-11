@@ -1,0 +1,54 @@
+{
+  "compilerOptions": {
+    "target": "es2020",
+    "allowJs": false,
+    "checkJs": false,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "importHelpers": true,
+    "incremental": false,
+    "jsx": "react-jsx",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "noEmit": true,
+    "noImplicitAny": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "strict": true,
+    "strictBindCallApply": true,
+    "strictFunctionTypes": true,
+    "strictNullChecks": true,
+    "stripInternal": true,
+    "useUnknownInCatchVariables": false,
+    "lib": ["ESNext", "DOM"],
+    "baseUrl": ".",
+    "plugins": [
+      // {
+      //   "name": "ts-graphql-plugin",
+      //   "schema": "server/schema.gql",
+      //   "tag": "gql",
+      //   "typegen": {
+      //     "addons": [
+      //       "ts-graphql-plugin/addons/ty[ed-query-document",
+      //       "./codegen/typegen-addons"
+      //     ]
+      //   }
+      // }
+    ],
+    "paths": {
+      // "@/components": ["client/components"],
+      // "@/components/*": ["client/components/*"],
+      // "@/contexts": ["client/contexts"],
+      // "@/hooks": ["client/hooks"],
+      // "@/pages": ["client/pages"],
+      // "@/utils": ["client/utils"],
+      // "@/utils/*": ["client/utils/*"],
+      "@/server/*": ["server/*"],
+    },
+  },
+  "include": ["server", "client", "./global.d.ts"],
+  "exclude": [".vscode"]
+}
