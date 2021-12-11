@@ -4,6 +4,7 @@
   "description": "",
   "main": "server/index.ts",
   "scripts": {
+    "build": "echo \"Error: build not implimented\" && exit 1",
     "codegen": "./codegen/run.sh",
     "dev": "yarn codegen && yarn nodemon -r tsconfig-paths/register -r dotenv/config ./server/index.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
