@@ -29,5 +29,6 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: yarn install
     - run: yarn build
+    - run: cp ../../.env .
     - run: pm2 restart golfAPI
     
