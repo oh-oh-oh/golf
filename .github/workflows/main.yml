@@ -1,0 +1,31 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Node.js CI
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    branches: [ main ]
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    runs-on: self-hosted
+    
+    strategy:
+      matrix:
+        node-versions: [14.x]
+        
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.ks ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm i
+    - run: npm run build --if-present
+    - run: npm run test
+#     - run: rm -rf /var/www/reactapp && mv ./build reactapp && sudo mv ./reactapp /var/www/
+    
