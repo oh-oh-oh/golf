@@ -24,8 +24,8 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - run: npm i
-    - run: npm run build --if-present
-    - run: npm run test
+    - run: yarn install
+    - run: yarn build --if-present
+    - run: yarn test
 #     - run: rm -rf /var/www/reactapp && mv ./build reactapp && sudo mv ./reactapp /var/www/
     
