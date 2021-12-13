@@ -1,0 +1,10 @@
+diff --git a/node_modules/type-graphql/dist/decorators/Arg.d.ts b/node_modules/type-graphql/dist/decorators/Arg.d.ts
+index 7a91cf1..e9e5683 100644
+--- a/node_modules/type-graphql/dist/decorators/Arg.d.ts
++++ b/node_modules/type-graphql/dist/decorators/Arg.d.ts
+@@ -1,4 +1,5 @@
+ import { ReturnTypeFunc, DecoratorTypeOptions, DescriptionOptions, ValidateOptions } from "./types";
+ export declare type ArgOptions = DecoratorTypeOptions & DescriptionOptions & ValidateOptions;
++export declare function Arg(): ParameterDecorator;
+ export declare function Arg(name: string, options?: ArgOptions): ParameterDecorator;
+ export declare function Arg(name: string, returnTypeFunc: ReturnTypeFunc, options?: ArgOptions): ParameterDecorator;

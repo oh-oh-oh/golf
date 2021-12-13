@@ -26,26 +26,25 @@
     "lib": ["ESNext", "DOM"],
     "baseUrl": ".",
     "plugins": [
-      // {
-      //   "name": "ts-graphql-plugin",
-      //   "schema": "server/schema.gql",
-      //   "tag": "gql",
-      //   "typegen": {
-      //     "addons": [
-      //       "ts-graphql-plugin/addons/ty[ed-query-document",
-      //       "./codegen/typegen-addons"
-      //     ]
-      //   }
-      // }
+      {
+        "name": "ts-graphql-plugin",
+        "schema": "server/schema.gql",
+        "tag": "gql",
+        "typegen": {
+          "addons": [
+            "ts-graphql-plugin/addons/typed-query-document",
+            "./codegen/typegen-addons"
+          ]
+        }
+      }
     ],
     "paths": {
       // "@/components": ["client/components"],
       // "@/components/*": ["client/components/*"],
       // "@/contexts": ["client/contexts"],
       // "@/hooks": ["client/hooks"],
-      // "@/pages": ["client/pages"],
-      // "@/utils": ["client/utils"],
-      // "@/utils/*": ["client/utils/*"],
+      "@/pages/*": ["client/pages/*"],
+      "@/utils": ["client/utils"],
       "@/server/*": ["server/*"],
     },
   },

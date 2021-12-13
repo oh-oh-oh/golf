@@ -5,25 +5,25 @@
     "sourceMap": true,
     "outDir": "../dist/server",
     "rootDir": "./",
-    "baseUrl": "./",
     "removeComments": true,
     "strict": true,
     "moduleResolution": "node",
+    "baseUrl": "./",
     "esModuleInterop": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "useUnknownInCatchVariables": false,
-    "resolveJsonModule": true,
+    "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "plugins": [
-      // {
-      //   "transform": "../scripts/inject-type.ts",
-      //   "type": "raw"
-      // }
-    ],
     "paths": {
       "@/server/*": ["*"],
     },
+    "plugins": [
+      {
+        "transform": "../scripts/inject-type.ts",
+        "type": "raw"
+      }
+    ],
   },
   "exclude": ["**/*.spec.ts", "**/*.test.ts", "**/*.mock.ts"]
 }

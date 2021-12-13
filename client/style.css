@@ -1,0 +1,9 @@
+body,
+input,
+button,
+select,
+optgroup,
+textarea,
+html body {
+  font-family: Inter, sans-serif;
+}

@@ -23,6 +23,8 @@ class EnvironmentVariables {
 
   NODE_ENV: 'production' | 'development' | 'test' = this.get('NODE_ENV') as any;
   PORT = this.getOptional('PORT', '3000');
+  JWT_SECRET = this.get('JWT_SECRET');
+  ALLOWED_CORS_ORIGIN = this.get('ALLOWED_CORS_ORIGIN');
 
 }
 
