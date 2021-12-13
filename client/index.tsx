@@ -19,6 +19,7 @@ import typePolicies from './typePolicies';
 
 import App from './App';
 
+import 'antd/dist/antd.min.css';
 import './style.css';
 
 const url = new URL(window.location.origin);
@@ -60,7 +61,7 @@ const batchHttpLink = new BatchHttpLink({
   credentials: 'include',
   batchInterval: 20,
 });
-console.log('wsp', wsJwtPayload)
+
 const wsLink = new WebSocketLink({
   uri: `${wsProtocol}//${url.host}/graphql`,
   options: {
