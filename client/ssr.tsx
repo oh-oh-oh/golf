@@ -30,6 +30,7 @@ export const ssr = async ({
   route,
   query,
   template,
+  // userContext,
   wsJwt,
 }: SSROptions) => {
   const client = new ApolloClient({
@@ -68,9 +69,7 @@ export const ssr = async ({
     </ApolloProvider>
   );
 
-  console.log('something!');
   const content = await renderToStringWithData(Wrapper);
-  console.log('something!2', content);
   const { html, style } = extractEmotion(content);
 
   const initialState = client.extract();

@@ -39,12 +39,13 @@
       }
     ],
     "paths": {
-      // "@/components": ["client/components"],
-      // "@/components/*": ["client/components/*"],
-      // "@/contexts": ["client/contexts"],
-      // "@/hooks": ["client/hooks"],
+      "@/components": ["client/components"],
+      "@/components/*": ["client/components/*"],
+      "@/contexts": ["client/contexts"],
+      "@/hooks": ["client/hooks"],
       "@/pages/*": ["client/pages/*"],
       "@/utils": ["client/utils"],
+      "@/utils/*": ["client/utils/*"],
       "@/server/*": ["server/*"],
     },
   },

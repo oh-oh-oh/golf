@@ -1,10 +1,10 @@
 import {
   ApolloClient,
   ApolloProvider,
-  from,
   InMemoryCache,
   ServerError,
   split,
+  from,
 } from '@apollo/client';
 import { BatchHttpLink } from '@apollo/client/link/batch-http';
 import { WebSocketLink } from '@apollo/client/link/ws';
@@ -24,10 +24,10 @@ import './style.css';
 
 const url = new URL(window.location.origin);
 const cache = new InMemoryCache({ typePolicies, addTypename: false }).restore(
-  JSON.parse(document.getElementById('__APOLLO_STATE__')?.innerHTML || '{}'),
+  JSON.parse(document.getElementById('__APOLLO_STATE__')!.innerHTML),
 );
 const wsJwtPayload = JSON.parse(
-  document.getElementById('__WS_JWT__')?.innerHTML || '{"authentication":"123"}'
+  document.getElementById('__WS_JWT__')!.innerHTML,
 );
 
 const wsProtocol = url.protocol === 'https:' ? 'wss:' : 'ws:';
@@ -98,5 +98,5 @@ hydrate(
       </CacheProvider>
     </BrowserRouter>
   </ApolloProvider>,
-  document.getElementById('root'),
+  document.querySelector('[data-app]'),
 );
