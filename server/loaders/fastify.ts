@@ -8,13 +8,14 @@ import { Logger } from 'pino';
 import { env } from '../config';
 import ErrorHandler from './plugins/errorHandler';
 import fastifyCors from 'fastify-cors';
-import { ViteDevServer } from 'vite';
 import fastifyExpress from 'fastify-express';
 import fastifyStatic from 'fastify-static';
+import { GraphQLSchema } from 'graphql';
 import fs from 'fs';
+import { ViteDevServer } from 'vite';
+import authentication from './plugins/authentication';
 import { ApiError, ValidationError } from '../errors';
 import { Services } from './service';
-import { GraphQLSchema } from 'graphql';
 
 const locate = (...paths: string[]) => resolve(__dirname, ...paths);
 const isDev = env.NODE_ENV === 'development';
@@ -53,7 +54,10 @@ export default async ({
       verify(value, env.JWT_SECRET) as Record<string, any>,
   });
 
-  // authentication
+  app.register(authentication, {
+    logger,
+    securePaths: ['*'],
+  })
 
   app.register(mercurius, {
     schema: graphQLSchema,
@@ -94,7 +98,7 @@ export default async ({
     }),
   });
 
-  // app.register(fastifyFavicon, { path: './client', name: 'facivon.ico' });
+  app.register(fastifyFavicon, { path: './client', name: 'facivon.ico' });
 
   const rootPath = isDev ? locate('../..') : '../..';
   const allowedOrigin: (string | RegExp)[] = [
@@ -159,7 +163,7 @@ export default async ({
       route,
       query: query as Record<string, string>,
       template: indexTemplate,
-      // userContext: req.user,
+      userContext: req.user ?? null,
       wsJwt,
     });
     // console.log('RESULT', result)

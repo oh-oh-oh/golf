@@ -3,6 +3,7 @@ import { Button } from 'antd';
 import Test from '@/components/Test';
 import { styled } from '@/utils/styled';
 import { useNavigate } from 'react-router-dom';
+import { useAuthContext } from '@/contexts';
 
 const Feed: React.FC = () => {
   const TEST = gql`
@@ -18,10 +19,11 @@ const Feed: React.FC = () => {
   const { data } = useQuery(TEST);
 
   const navigate = useNavigate();
+  const {logout} = useAuthContext();
 
   const test = () => {
-    console.log('hello?');
-    navigate('/protected');
+    // navigate('/protected');
+    logout()
   };
 
   console.log('data?', data);

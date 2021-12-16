@@ -8,6 +8,10 @@ class UserService {
   async find(): Promise<User> {
     return { id: 1, username: 'tim', password: '123' };
   }
+
+  async login(): Promise<User> {
+    return { id: 1, username: 'tim', password: '123' };
+  }
 }
 
-export default UserService
+export default UserService;

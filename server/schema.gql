@@ -3,6 +3,10 @@
 # !!!   DO NOT MODIFY THIS FILE BY YOURSELF   !!!
 # -----------------------------------------------
 
+type Mutation {
+  login(password: String!, username: String!): User
+}
+
 type Query {
   user: User
   users: [User!]!
