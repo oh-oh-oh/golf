@@ -1,4 +1,4 @@
-import { env } from '@/server/config';
+import { env } from '../../config';
 import { Role } from '@prisma/client';
 import { FastifyPluginCallback, FastifyReply, FastifyRequest } from 'fastify';
 import { CookieSerializeOptions } from 'fastify-cookie';
