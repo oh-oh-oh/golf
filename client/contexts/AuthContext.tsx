@@ -41,7 +41,7 @@ export const AuthContextProvider: React.FC = ({ children }) => {
   const navigate = useNavigate();
   const [logout] = useMutation(LOGOUT, {
     onCompleted() {
-      navigate('/login');
+      window.location.assign('/login');
     },
     onError(err) {
       console.error(err);

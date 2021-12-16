@@ -30,8 +30,8 @@ class UserMutationResolver {
   @Mutation(returns => Boolean)
   async logout(@Ctx() { req, res, redis }: MyContext) {
     const { golf } = req.cookies;
-    const redisKey = verify(golf, env.JWT_SECRET) as string;
     try {
+      const redisKey = verify(golf, env.JWT_SECRET) as string;
       res.clearCookie('golf');
       redis.del(redisKey);
     } catch (err) {
