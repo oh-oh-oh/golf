@@ -10,7 +10,6 @@ import ProtectedRoute from './ProtectedRoute';
 import Feed from '@/pages/Feed';
 import Protected from '@/pages/Protected';
 import Login from '@/pages/Auth/Login';
-import Logout from '@/pages/Auth/Logout';
 import InnerLayout from './InnerLayout';
 import Admin from '@/pages/Admin';
 import LogoutBtn from '@/components/LogoutBtn';
@@ -18,7 +17,6 @@ import LogoutBtn from '@/components/LogoutBtn';
 const publicRoutes = {
   '/': Feed,
   '/login': Login,
-  '/logout': Logout,
 };
 
 const routes = {
