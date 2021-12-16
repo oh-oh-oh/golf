@@ -59,4 +59,7 @@ build({
         .concat(builtinModules)
     : [],
   watch: args.includes('-w') || args.includes('--watch'),
+  loader: {
+    '.png': 'binary',
+  },
 }).catch(() => process.exit(1));
