@@ -1,5 +1,5 @@
-import { env } from '@/server/config';
-import { MyContext } from '@/server/utils/types';
+import { env } from '../../../config';
+import { MyContext } from '../../../utils/types';
 import { sign, verify } from 'jsonwebtoken';
 import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql';
 import { Inject } from 'typedi';
