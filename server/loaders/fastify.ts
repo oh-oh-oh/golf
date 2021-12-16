@@ -71,7 +71,7 @@ export default async ({
         },
       },
       redisClient,
-      isAuthorized: async user => user.role === 'ADMIN',
+      isAuthorized: async (user: AuthUser) => user.role === 'ADMIN',
     },
   });
 
