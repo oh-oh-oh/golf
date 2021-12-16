@@ -1,20 +1,23 @@
-import { join, resolve } from 'path';
 import fastify from 'fastify';
 import fastifyCookie from 'fastify-cookie';
-import fastifyFavicon from 'fastify-favicon';
-import { sign, verify } from 'jsonwebtoken';
-import mercurius from 'mercurius';
-import { Logger } from 'pino';
-import { env } from '../config';
-import ErrorHandler from './plugins/errorHandler';
 import fastifyCors from 'fastify-cors';
-import { ViteDevServer } from 'vite';
 import fastifyExpress from 'fastify-express';
+import fastifyFavicon from 'fastify-favicon';
 import fastifyStatic from 'fastify-static';
 import fs from 'fs';
+import { GraphQLSchema } from 'graphql';
+import { Redis } from 'ioredis';
+import { sign, verify } from 'jsonwebtoken';
+import mercurius from 'mercurius';
+import { join, resolve } from 'path';
+import { Logger } from 'pino';
+import { ViteDevServer } from 'vite';
+import { env } from '../config';
+import ErrorHandler from './plugins/errorHandler';
+import authentication from './plugins/authentication';
 import { ApiError, ValidationError } from '../errors';
 import { Services } from './service';
-import { GraphQLSchema } from 'graphql';
+import { AuthUser } from './plugins/myAuth';
 
 const locate = (...paths: string[]) => resolve(__dirname, ...paths);
 const isDev = env.NODE_ENV === 'development';
@@ -23,13 +26,14 @@ interface FastifyLoaderOption {
   logger: Logger;
   graphQLSchema: GraphQLSchema;
   services: Services;
-  // redisClient: Redis;
-  getUserById: (userId: number) => Promise<any>;
+  redisClient: Redis;
+  getUserById: (userId: number) => Promise<AuthUser | undefined>;
 }
 
 export default async ({
   logger,
   graphQLSchema,
+  redisClient,
   services,
   getUserById,
 }: FastifyLoaderOption) => {
@@ -48,18 +52,35 @@ export default async ({
         sign(value, env.JWT_SECRET, {
           expiresIn: value.expiresIn - 60,
         }) as string,
+      unsign: (value: string) =>
+        verify(value, env.JWT_SECRET) as Record<string, any>,
     },
-    unsign: (value: string) =>
-      verify(value, env.JWT_SECRET) as Record<string, any>,
   });
 
-  // authentication
+  app.register(authentication, {
+    logger,
+    securePaths: ['*', '/graphql'],
+    myAuthPluginOptions: {
+      cookie: {
+        name: 'golf',
+        options: {
+          secure: !isDev,
+          httpOnly: true,
+          signed: true,
+          path: '/',
+        },
+      },
+      redisClient,
+      isAuthorized: async user => user.role === 'ADMIN',
+    },
+  });
 
   app.register(mercurius, {
     schema: graphQLSchema,
     context: (req, res) => ({
       req,
       res,
+      redis: redisClient,
       services,
       // dataLoaders: loadDataLoader(services, req)
     }),
@@ -94,7 +115,7 @@ export default async ({
     }),
   });
 
-  // app.register(fastifyFavicon, { path: './client', name: 'facivon.ico' });
+  app.register(fastifyFavicon, { path: './client', name: 'facivon.ico' });
 
   const rootPath = isDev ? locate('../..') : '../..';
   const allowedOrigin: (string | RegExp)[] = [
@@ -153,13 +174,15 @@ export default async ({
     const baseUrl = `${protocol}//${host}`;
     const graphqlUrl = `${baseUrl}/graphql`;
 
+    console.log('req user?', req.user)
+
     const result = await ssr({
       graphqlUrl,
       cookie: cookie!,
       route,
       query: query as Record<string, string>,
       template: indexTemplate,
-      // userContext: req.user,
+      userContext: req.user ?? null,
       wsJwt,
     });
     // console.log('RESULT', result)

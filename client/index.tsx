@@ -1,10 +1,10 @@
 import {
   ApolloClient,
   ApolloProvider,
-  from,
   InMemoryCache,
   ServerError,
   split,
+  from,
 } from '@apollo/client';
 import { BatchHttpLink } from '@apollo/client/link/batch-http';
 import { WebSocketLink } from '@apollo/client/link/ws';
@@ -21,13 +21,14 @@ import App from './App';
 
 import 'antd/dist/antd.min.css';
 import './style.css';
+// import { BatchLink } from '@apollo/client/link/batch';
 
 const url = new URL(window.location.origin);
 const cache = new InMemoryCache({ typePolicies, addTypename: false }).restore(
-  JSON.parse(document.getElementById('__APOLLO_STATE__')?.innerHTML || '{}'),
+  JSON.parse(document.getElementById('__APOLLO_STATE__')!.innerHTML),
 );
 const wsJwtPayload = JSON.parse(
-  document.getElementById('__WS_JWT__')?.innerHTML || '{"authentication":"123"}'
+  document.getElementById('__WS_JWT__')!.innerHTML,
 );
 
 const wsProtocol = url.protocol === 'https:' ? 'wss:' : 'ws:';
@@ -62,28 +63,28 @@ const batchHttpLink = new BatchHttpLink({
   batchInterval: 20,
 });
 
-const wsLink = new WebSocketLink({
-  uri: `${wsProtocol}//${url.host}/graphql`,
-  options: {
-    reconnect: true,
-    connectionParams: wsJwtPayload,
-  },
-});
+// const wsLink = new WebSocketLink({
+//   uri: `${wsProtocol}//${url.host}/graphql`,
+//   options: {
+//     reconnect: true,
+//     connectionParams: wsJwtPayload,
+//   },
+// });
 
-const splitLink = split(
-  ({ query }) => {
-    const definition = getMainDefinition(query);
-    return (
-      definition.kind === 'OperationDefinition' &&
-      definition.operation === 'subscription'
-    );
-  },
-  batchHttpLink,
-  wsLink,
-);
+// const splitLink = split(
+//   ({ query }) => {
+//     const definition = getMainDefinition(query);
+//     return (
+//       definition.kind === 'OperationDefinition' &&
+//       definition.operation === 'subscription'
+//     );
+//   },
+//   batchHttpLink,
+//   wsLink,
+// );
 
 const client = new ApolloClient({
-  link: from([errorHandler, splitLink]),
+  link: from([errorHandler, batchHttpLink]),
   credentials: 'include',
   cache,
 });
@@ -98,5 +99,5 @@ hydrate(
       </CacheProvider>
     </BrowserRouter>
   </ApolloProvider>,
-  document.getElementById('root'),
+  document.querySelector('[data-app]'),
 );

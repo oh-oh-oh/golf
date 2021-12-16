@@ -1,21 +1,21 @@
-import { gql, useQuery } from '@apollo/client';
-import styled from '@emotion/styled';
+import { styled } from '@/utils/styled';
+import { useAuthContext } from '@/contexts';
 
 const Feed: React.FC = () => {
-  const TEST = gql`
-    query TestQuery {
-      user {
-        id
-        username
-        password
-      }
-    }
-  `;
+  const { auth } = useAuthContext();
 
-  const { data } = useQuery(TEST);
-  console.log('data?', data);
-  return <Wrapper>FEED?</Wrapper>;
+  return (
+    <Wrapper>
+      <Title>FEED</Title>
+    </Wrapper>
+  );
 };
 
-const Wrapper = styled.div``;
+const Wrapper = styled.div`
+  cursor: pointer;
+`;
+
+const Title = styled.h1`
+  color: ${({ theme }) => theme.color.green};
+`;
 export default Feed;

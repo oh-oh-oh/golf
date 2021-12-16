@@ -1,4 +1,4 @@
-export interface ValidationError {
+export interface ValidationErrorType {
   field: string;
   message: string;
 }
@@ -50,9 +50,9 @@ export class ValidationError extends ApiError {
   name = 'ValidationError';
   type = 'VALIDATION_ERROR';
   statusCode = StatusCode.BadRequest;
-  validation: ValidationError
+  validation: ValidationErrorType;
 
-  constructor(message: string, validation: ValidationError) {
+  constructor(message: string, validation: ValidationErrorType) {
     super(message);
     this.validation = validation;
   }

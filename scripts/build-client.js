@@ -48,7 +48,7 @@ build({
   platform: isSSR ? 'node' : 'browser',
   sourcemap: DEV,
   minify: PROD,
-  target: ['chrome80'],
+  target: isSSR ? ['node14'] : ['chrome94'],
   define: {
     ...env,
     'process.env': JSON.stringify(processEnv),

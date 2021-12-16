@@ -1,16 +1,15 @@
 import Container from 'typedi';
 import UserService from '../modules/user/services/UserService';
+import { Repositories } from './repository';
 
 interface ServiceLoaderInjectable {
   Container: typeof Container;
-  // repositories: Repositories;
-  // prisma: PrismaClient;
+  repositories: Repositories;
 }
 const serviceLoader = ({
   Container,
-}: // repositories
-// prisma
-ServiceLoaderInjectable) => {
+  repositories: { UserRepository },
+}: ServiceLoaderInjectable) => {
   const create = <T, R extends unknown[]>(
     Class: new (...args: R) => T,
     args: R,
@@ -20,7 +19,7 @@ ServiceLoaderInjectable) => {
     return instance;
   };
 
-  const UserServiceInstance = create(UserService, []);
+  const UserServiceInstance = create(UserService, [UserRepository]);
   return {
     UserService: UserServiceInstance,
   };

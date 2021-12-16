@@ -1,21 +1,70 @@
 import React from 'react';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import { ThemeProvider } from '@emotion/react';
+
+import { theme } from '@/utils/theme';
+import { AuthContextProvider } from '../contexts/AuthContext';
 import './config';
-import { Routes, Route } from 'react-router-dom';
+import ProtectedRoute from './ProtectedRoute';
 
 import Feed from '@/pages/Feed';
+import Protected from '@/pages/Protected';
+import Login from '@/pages/Auth/Login';
+import Logout from '@/pages/Auth/Logout';
+import InnerLayout from './InnerLayout';
+import Admin from '@/pages/Admin';
+import LogoutBtn from '@/components/LogoutBtn';
+
+const publicRoutes = {
+  '/': Feed,
+  '/login': Login,
+  '/logout': Logout,
+};
 
 const routes = {
-  '/': Feed,
-  '/login': Feed,
-  '/feed': Feed,
+  '/protected': Protected,
+};
+
+const adminRoutes = {
+  '/admin': Admin,
 };
 
 const App: React.FC = () => (
-  <Routes>
-    {Object.entries(routes).map(([path, Page]) => (
-      <Route path={path} key={path} element={<Feed />} />
-    ))}
-  </Routes>
+  <AuthContextProvider>
+    <ThemeProvider theme={theme}>
+      <InnerLayout>
+        <LogoutBtn />
+        <Routes>
+          {Object.entries(publicRoutes).map(([path, Page]) => (
+            <Route path={path} key={path} element={<Page />} />
+          ))}
+          {Object.entries(routes).map(([path, Page]) => (
+            <Route
+              path={path}
+              key={path}
+              element={
+                <ProtectedRoute path={path}>
+                  <Page />
+                </ProtectedRoute>
+              }
+            />
+          ))}
+          {Object.entries(adminRoutes).map(([path, Page]) => (
+            <Route
+              path={path}
+              key={path}
+              element={
+                <ProtectedRoute admin path={path}>
+                  <Page />
+                </ProtectedRoute>
+              }
+            />
+          ))}
+          <Route path="*" element={<Navigate to="/" />} />
+        </Routes>
+      </InnerLayout>
+    </ThemeProvider>
+  </AuthContextProvider>
 );
 
 export default App;

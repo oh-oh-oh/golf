@@ -3,13 +3,23 @@
 # !!!   DO NOT MODIFY THIS FILE BY YOURSELF   !!!
 # -----------------------------------------------
 
+type Mutation {
+  login(password: String!, username: String!): User
+  logout: Boolean!
+}
+
 type Query {
   user: User
   users: [User!]!
 }
 
+enum Role {
+  ADMIN
+  USER
+}
+
 type User {
   id: Float!
-  password: String!
+  role: Role!
   username: String!
 }
