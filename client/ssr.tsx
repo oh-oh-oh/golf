@@ -11,6 +11,7 @@ import App from './App';
 import { renderToStringWithData } from '@apollo/client/react/ssr';
 import typePolicies from './typePolicies';
 import { StaticRouter } from 'react-router-dom/server';
+import { AuthContextType } from './contexts/AuthContext';
 
 export type SSR = typeof ssr;
 
@@ -20,7 +21,7 @@ interface SSROptions {
   route: string;
   query: Record<string, string>;
   template: string;
-  // userContext?: AuthContextType['auth'];
+  userContext?: AuthContextType['auth'];
   wsJwt?: string;
 }
 
@@ -30,7 +31,7 @@ export const ssr = async ({
   route,
   query,
   template,
-  // userContext,
+  userContext,
   wsJwt,
 }: SSROptions) => {
   const client = new ApolloClient({
@@ -52,8 +53,7 @@ export const ssr = async ({
     }
     `,
     data: {
-      user: { name: 'tim' },
-      // user: userContext
+      user: userContext
     },
   });
 
