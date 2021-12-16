@@ -1,4 +1,5 @@
-import { gql, useQuery } from '@apollo/client';
+import { gql, useMutation, useQuery } from '@apollo/client';
+import { Role } from '@prisma/client';
 import React, { useCallback, useContext } from 'react';
 import { useNavigate } from 'react-router';
 
@@ -6,6 +7,7 @@ export type AuthContextType = {
   auth: {
     id: number;
     username: string;
+    role: Role;
   } | null;
   logout(): void;
 };
@@ -15,6 +17,12 @@ const AuthContext = React.createContext<
 >({});
 
 const gql2 = gql;
+
+const LOGOUT = gql`
+  mutation Logout {
+    logout
+  }
+`;
 
 export const useAuthContext = () => useContext(AuthContext);
 
@@ -31,9 +39,14 @@ export const AuthContextProvider: React.FC = ({ children }) => {
   );
 
   const navigate = useNavigate();
-  const logout = () => {
-    navigate('/logout');
-  };
+  const [logout] = useMutation(LOGOUT, {
+    onCompleted() {
+      navigate('/login');
+    },
+    onError(err) {
+      console.error(err);
+    },
+  });
 
   return (
     <AuthContext.Provider

@@ -26,6 +26,11 @@ class EnvironmentVariables {
   JWT_SECRET = this.get('JWT_SECRET');
   ALLOWED_CORS_ORIGIN = this.get('ALLOWED_CORS_ORIGIN');
 
+  REDIS = {
+    HOST: this.get('REDIS_HOST'),
+    PORT: this.get('REDIS_PORT'),
+    PASSWORD: this.get('REDIS_PWD'),
+  };
 }
 
 export default new EnvironmentVariables();

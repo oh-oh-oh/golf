@@ -5,6 +5,7 @@
 
 type Mutation {
   login(password: String!, username: String!): User
+  logout: Boolean!
 }
 
 type Query {
@@ -12,8 +13,13 @@ type Query {
   users: [User!]!
 }
 
+enum Role {
+  ADMIN
+  USER
+}
+
 type User {
   id: Float!
-  password: String!
+  role: Role!
   username: String!
 }

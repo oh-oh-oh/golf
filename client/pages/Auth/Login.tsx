@@ -1,8 +1,9 @@
 import React, { ChangeEvent, ChangeEventHandler, useState } from 'react';
-import { styled } from '@/utils/styled';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
-import { Button, Form, Input, Layout, message } from 'antd';
 import { gql, useMutation, useQuery } from '@apollo/client';
+import { Button, Form, FormItemProps, Input, Layout, message } from 'antd';
+import { styled } from '@/utils/styled';
+import { useLocation } from 'react-router';
 import { LoginDocument } from './__generated__';
 
 type LoginFormType = {
@@ -30,16 +31,25 @@ const LOGIN_QUERY = gql`
 ` as LoginDocument;
 
 const Login: React.FC = () => {
+  const { state } = useLocation();
+
   const [errors, setErrors] = useState<LoginErrorsType>({});
-  const [login, { loading, data }] = useMutation(LOGIN_QUERY,{
+  const [login, { loading, data }] = useMutation(LOGIN_QUERY, {
     onCompleted() {
-      message.success(success)
+      message.success('success');
+      window.location.assign(state?.path ?? '/');
     },
-    onError({networkError, graphQLErrors}) {
-      // message.error(err.message)
-      console.log('network', networkError)
-      console.log('graphql', graphQLErrors)
-    }
+    onError({ graphQLErrors }) {
+      const errs: LoginErrorsType = {};
+      graphQLErrors.forEach(({ extensions }) => {
+        if (extensions && extensions.validation) {
+          const { field, message } = extensions.validation;
+          errs[field as keyof LoginErrorsType] = message;
+        }
+      });
+      console.log(errs);
+      setErrors(errs);
+    },
   });
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setErrors(prev => ({
@@ -50,33 +60,39 @@ const Login: React.FC = () => {
   };
 
   const onFinish = ({ username, password }: LoginFormType) => {
-    console.log(username, password)
     login({ variables: { username, password } });
-    console.log(username, password)
   };
+
+  const commonProps = (key: keyof LoginFormType): FormItemProps => ({
+    name: key,
+    help: errors[key],
+    validateStatus: errors[key] ? 'error' : undefined,
+  });
   return (
     <Wrapper>
       <StyledForm
         name="login"
-        initialValues={{}}
         onFinish={values => onFinish(values as LoginFormType)}
       >
         <Form.Item
-          name="username"
+          {...commonProps('username')}
           rules={[{ required: true, message: 'Please input Username.' }]}
-          onChange={handleChange}
         >
-          <Input prefix={<UserOutlined />} placeholder="Username" />
+          <Input
+            prefix={<UserOutlined />}
+            placeholder="Username"
+            onChange={handleChange}
+          />
         </Form.Item>
         <Form.Item
-          name="password"
+          {...commonProps('password')}
           rules={[{ required: true, message: 'Please input Password.' }]}
-          onChange={handleChange}
         >
           <Input
             prefix={<LockOutlined />}
             type="password"
             placeholder="Password"
+            onChange={handleChange}
           />
         </Form.Item>
         <Form.Item>

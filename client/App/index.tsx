@@ -12,6 +12,8 @@ import Protected from '@/pages/Protected';
 import Login from '@/pages/Auth/Login';
 import Logout from '@/pages/Auth/Logout';
 import InnerLayout from './InnerLayout';
+import Admin from '@/pages/Admin';
+import LogoutBtn from '@/components/LogoutBtn';
 
 const publicRoutes = {
   '/': Feed,
@@ -23,10 +25,15 @@ const routes = {
   '/protected': Protected,
 };
 
+const adminRoutes = {
+  '/admin': Admin,
+};
+
 const App: React.FC = () => (
   <AuthContextProvider>
     <ThemeProvider theme={theme}>
       <InnerLayout>
+        <LogoutBtn />
         <Routes>
           {Object.entries(publicRoutes).map(([path, Page]) => (
             <Route path={path} key={path} element={<Page />} />
@@ -36,7 +43,18 @@ const App: React.FC = () => (
               path={path}
               key={path}
               element={
-                <ProtectedRoute>
+                <ProtectedRoute path={path}>
+                  <Page />
+                </ProtectedRoute>
+              }
+            />
+          ))}
+          {Object.entries(adminRoutes).map(([path, Page]) => (
+            <Route
+              path={path}
+              key={path}
+              element={
+                <ProtectedRoute admin path={path}>
                   <Page />
                 </ProtectedRoute>
               }
