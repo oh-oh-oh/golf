@@ -6,7 +6,7 @@ import { Inject } from 'typedi';
 import { User } from '../models';
 import UserService from '../services/UserService';
 import { ApiError } from '../../../errors';
-import { trimLower } from '@/server/utils/trimLower';
+import { trimLower } from '../../../utils/trimLower';
 
 @Resolver(of => User)
 class UserMutationResolver {
