@@ -1,11 +1,11 @@
 import React, { ChangeEvent, useState } from 'react';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { gql, useMutation } from '@apollo/client';
-import { ButtonProps } from 'antd/lib/button'
 import { Button, Form, FormItemProps, Input, message } from 'antd';
 import { useLocation, useNavigate } from 'react-router';
-import { LoginDocument } from './__generated__';
+import { RegisterDocument } from './__generated__';
 import { Title } from '@/utils/styledComponents';
+
 import {
   Wrapper,
   StyledForm,
@@ -14,39 +14,44 @@ import {
 } from './utils/styled';
 import { buttonLink } from './utils/buttonLink';
 
-type LoginFormType = {
+type RegisterFormType = {
   username: string;
   password: string;
 };
 
-type LoginErrorsType = {
+type RegisterErrorsType = {
   username?: string;
   password?: string;
   general?: string;
 };
 
-const LOGIN_QUERY = gql`
-  mutation Login($username: String!, $password: String!) {
-    login(username: $username, password: $password)
+const initForm: RegisterFormType = {
+  username: '',
+  password: '',
+};
+
+const REGISTER_QUERY = gql`
+  mutation Register($username: String!, $password: String!) {
+    register(username: $username, password: $password)
   }
-` as LoginDocument;
+` as RegisterDocument;
 
-const Login: React.FC = () => {
+const Register: React.FC = () => {
   const { state } = useLocation();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  const [errors, setErrors] = useState<LoginErrorsType>({});
-  const [login, { loading, data }] = useMutation(LOGIN_QUERY, {
+  const [errors, setErrors] = useState<RegisterErrorsType>({});
+  const [register, { loading }] = useMutation(REGISTER_QUERY, {
     onCompleted() {
       message.success('success');
       window.location.assign(state?.path ?? '/');
     },
     onError({ graphQLErrors }) {
-      const errs: LoginErrorsType = {};
+      const errs: RegisterErrorsType = {};
       graphQLErrors.forEach(({ extensions }) => {
         if (extensions && extensions.validation) {
           const { field, message } = extensions.validation;
-          errs[field as keyof LoginErrorsType] = message;
+          errs[field as keyof RegisterErrorsType] = message;
         }
       });
       setErrors(errs);
@@ -60,25 +65,22 @@ const Login: React.FC = () => {
     }));
   };
 
-  const onFinish = ({ username, password }: LoginFormType) => {
-    login({ variables: { username, password } });
+  const onFinish = ({ username, password }: RegisterFormType) => {
+    register({ variables: { username, password } });
   };
 
-  const commonProps = (key: keyof LoginFormType): FormItemProps => ({
+  const commonProps = (key: keyof RegisterFormType): FormItemProps => ({
     name: key,
     help: errors[key],
     validateStatus: errors[key] ? 'error' : undefined,
   });
-
-  
-
   return (
     <Wrapper>
       <StyledForm
-        name="login"
-        onFinish={values => onFinish(values as LoginFormType)}
+        name="register"
+        onFinish={values => onFinish(values as RegisterFormType)}
       >
-        <Title>Login</Title>
+        <Title>Register</Title>
         <Form.Item
           {...commonProps('username')}
           rules={[{ required: true, message: 'Please input Username.' }]}
@@ -107,15 +109,14 @@ const Login: React.FC = () => {
             loading={loading}
             disabled={loading}
           >
-            Log in
+            Register
           </StyledButton>
         </Form.Item>
         <StyledBottomRow>
-          {/* <Button {...buttonLink('/register', navigate)}>Forgot Password?</Button> @TODO */}
-          <Button {...buttonLink('/register', navigate)}>Register</Button>
+          <Button {...buttonLink('/login', navigate)}>Login</Button>
         </StyledBottomRow>
       </StyledForm>
     </Wrapper>
   );
 };
-export default Login;
+export default Register;

@@ -7,16 +7,20 @@ import { AuthContextProvider } from '../contexts/AuthContext';
 import './config';
 import ProtectedRoute from './ProtectedRoute';
 
-import Feed from '@/pages/Feed';
-import Protected from '@/pages/Protected';
-import Login from '@/pages/Auth/Login';
 import InnerLayout from './InnerLayout';
-import Admin from '@/pages/Admin';
 import LogoutBtn from '@/components/LogoutBtn';
+
+import Feed from '@/pages/Feed';
+import Register from '@/pages/Auth/Register';
+import Login from '@/pages/Auth/Login';
+
+import Protected from '@/pages/Protected';
+import Admin from '@/pages/Admin';
 
 const publicRoutes = {
   '/': Feed,
   '/login': Login,
+  '/register': Register,
 };
 
 const routes = {
