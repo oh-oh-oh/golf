@@ -13,7 +13,7 @@ import { getMainDefinition } from '@apollo/client/utilities';
 import createCache from '@emotion/cache';
 import { CacheProvider } from '@emotion/react';
 import { message } from 'antd';
-import { hydrate } from 'react-dom';
+import { hydrate, render, Renderer } from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import typePolicies from './typePolicies';
 
@@ -23,6 +23,13 @@ import 'antd/dist/antd.min.css';
 import './style.css';
 // import { BatchLink } from '@apollo/client/link/batch';
 
+var renderer: Renderer;
+var root = document.querySelector('[data-app]');
+if (root && root.innerHTML !== '') {
+  renderer = hydrate
+} else {
+  renderer = render;
+}
 const url = new URL(window.location.origin);
 const cache = new InMemoryCache({ typePolicies, addTypename: false }).restore(
   JSON.parse(document.getElementById('__APOLLO_STATE__')!.innerHTML),
@@ -91,7 +98,7 @@ const client = new ApolloClient({
 
 const styledCache = createCache({ key: 'golf' });
 
-hydrate(
+renderer(
   <ApolloProvider client={client}>
     <BrowserRouter>
       <CacheProvider value={styledCache}>
