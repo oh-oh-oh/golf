@@ -21,6 +21,7 @@ async function seed() {
         role: Role.USER,
       },
     });
+    await prisma.course.deleteMany();
     const { id: courseId } = await prisma.course.create({
       data: {
         name: 'manderly on the green',
@@ -58,38 +59,6 @@ async function seed() {
         },
       },
     });
-    const south = await prisma.courseNine.create({
-      data: {
-        name: 'south',
-        courseId,
-        par: {
-          create: {
-            one: 4,
-            two: 4,
-            three: 3,
-            four: 4,
-            five: 4,
-            six: 3,
-            seven: 5,
-            eight: 3,
-            nine: 5,
-          },
-        },
-        hdc: {
-          create: {
-            one: 6,
-            two: 2,
-            three: 7,
-            four: 3,
-            five: 1,
-            six: 5,
-            seven: 4,
-            eight: 9,
-            nine: 8,
-          },
-        },
-      },
-    });
     const central = await prisma.courseNine.create({
       data: {
         name: 'central',
@@ -118,6 +87,39 @@ async function seed() {
             seven: 4,
             eight: 5,
             nine: 1,
+          },
+        },
+      },
+    });
+
+    const south = await prisma.courseNine.create({
+      data: {
+        name: 'south',
+        courseId,
+        par: {
+          create: {
+            one: 4,
+            two: 4,
+            three: 3,
+            four: 4,
+            five: 4,
+            six: 3,
+            seven: 5,
+            eight: 3,
+            nine: 5,
+          },
+        },
+        hdc: {
+          create: {
+            one: 6,
+            two: 2,
+            three: 7,
+            four: 3,
+            five: 1,
+            six: 5,
+            seven: 4,
+            eight: 9,
+            nine: 8,
           },
         },
       },

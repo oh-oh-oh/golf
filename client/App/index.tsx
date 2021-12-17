@@ -13,6 +13,7 @@ import LogoutBtn from '@/components/LogoutBtn';
 import Feed from '@/pages/Feed';
 import Register from '@/pages/Auth/Register';
 import Login from '@/pages/Auth/Login';
+import CoursePage from '@/pages/Course';
 
 import Protected from '@/pages/Protected';
 import Admin from '@/pages/Admin';
@@ -21,6 +22,8 @@ const publicRoutes = {
   '/': Feed,
   '/login': Login,
   '/register': Register,
+
+  '/course': CoursePage,
 };
 
 const routes = {

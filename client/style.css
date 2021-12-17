@@ -51,3 +51,7 @@ html body {
 .ant-layout {
   background: none;
 }
+
+.ant-table-row {
+  cursor: pointer;
+}

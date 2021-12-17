@@ -33,7 +33,7 @@ model Course {
 model CourseNine {
   id          Int       @id @default(autoincrement())
   courseId    Int
-  course      Course    @relation(fields: [courseId], references: [id])
+  course      Course    @relation(fields: [courseId], references: [id], onDelete: Cascade)
   name        String
   par         Par?
   hdc         Handicap?
@@ -42,7 +42,7 @@ model CourseNine {
 model Par {
   id              Int         @id @default(autoincrement())
   courseNineId    Int
-  courseNine      CourseNine  @relation(fields: [courseNineId], references: [id])
+  courseNine      CourseNine  @relation(fields: [courseNineId], references: [id], onDelete: Cascade)
   one             Int
   two             Int
   three           Int
@@ -57,7 +57,7 @@ model Par {
 model Handicap {
   id              Int       @id @default(autoincrement())
   courseNineId    Int
-  courseNine      CourseNine  @relation(fields: [courseNineId], references: [id])
+  courseNine      CourseNine  @relation(fields: [courseNineId], references: [id], onDelete: Cascade)
   one             Int
   two             Int
   three           Int
