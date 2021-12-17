@@ -5,11 +5,12 @@ import { Container, Service } from 'typedi';
 import { buildSchema, NonEmptyArray } from 'type-graphql';
 import { env } from '../config';
 
+import { CourseQueryResolver } from '../modules/course/resolvers';
 import { UserMutationResolver, UserQueryResolver } from '../modules/user/resolvers';
 
 export default async () => {
   const schema = await buildSchema({
-    resolvers: getResolvers([UserQueryResolver, UserMutationResolver]),
+    resolvers: getResolvers([CourseQueryResolver, UserQueryResolver, UserMutationResolver]),
     dateScalarMode: 'isoDate',
     emitSchemaFile: env.NODE_ENV === 'development' && {
       path: resolve(__dirname, '../schema.gql'),

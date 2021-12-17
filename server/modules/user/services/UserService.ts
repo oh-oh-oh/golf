@@ -2,7 +2,7 @@ import { User as PrismaUser } from '@prisma/client';
 import { ApiError, ValidationError } from '../../../errors';
 import { Service } from 'typedi';
 import { User } from '../models';
-import { UserRepository } from '../repository';
+import { UserRepository } from '../repositories';
 import { compareSync } from 'bcrypt';
 
 @Service()

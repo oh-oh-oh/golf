@@ -7,6 +7,7 @@ import { formatCode } from './util';
 
 const files = [
   '../server/modules/user/models/types.raw.ts',
+  '../server/modules/course/models/types.raw.ts',
 ];
 
 const transformer = ({

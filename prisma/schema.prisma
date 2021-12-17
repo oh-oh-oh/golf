@@ -23,3 +23,48 @@ enum Role {
   USER
   ADMIN
 }
+
+model Course {
+  id      Int         @id @default(autoincrement())
+  name    String      @unique
+  data    CourseNine[]
+}
+
+model CourseNine {
+  id          Int       @id @default(autoincrement())
+  courseId    Int
+  course      Course    @relation(fields: [courseId], references: [id])
+  name        String
+  par         Par?
+  hdc         Handicap?
+}
+
+model Par {
+  id              Int         @id @default(autoincrement())
+  courseNineId    Int
+  courseNine      CourseNine  @relation(fields: [courseNineId], references: [id])
+  one             Int
+  two             Int
+  three           Int
+  four            Int
+  five            Int
+  six             Int
+  seven           Int
+  eight           Int
+  nine            Int
+}
+
+model Handicap {
+  id              Int       @id @default(autoincrement())
+  courseNineId    Int
+  courseNine      CourseNine  @relation(fields: [courseNineId], references: [id])
+  one             Int
+  two             Int
+  three           Int
+  four            Int
+  five            Int
+  six             Int
+  seven           Int
+  eight           Int
+  nine            Int
+}

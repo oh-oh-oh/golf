@@ -3,6 +3,19 @@
 # !!!   DO NOT MODIFY THIS FILE BY YOURSELF   !!!
 # -----------------------------------------------
 
+type Course {
+  data: [CourseNine!]!
+  id: Float!
+  name: String!
+}
+
+type CourseNine {
+  hdc: [Float!]!
+  id: Float!
+  name: String!
+  par: [Float!]!
+}
+
 type Mutation {
   login(password: String!, username: String!): Boolean!
   logout: Boolean!
@@ -10,6 +23,8 @@ type Mutation {
 }
 
 type Query {
+  course(courseId: Float!): Course
+  courses: [Course!]!
   user: User
   users: [User!]!
 }

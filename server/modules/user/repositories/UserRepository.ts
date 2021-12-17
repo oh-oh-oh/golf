@@ -1,14 +1,10 @@
-import { Prisma } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 import { hash } from 'bcrypt';
 import { Service } from 'typedi';
 
 @Service()
 class UserRepository {
-  constructor(
-    private dbContext: Prisma.UserDelegate<
-      Prisma.RejectOnNotFound | Prisma.RejectPerOperation | undefined
-    >,
-  ) {}
+  constructor(private dbContext: PrismaClient['user']) {}
 
   async create(username: string, password: string) {
     const hashedPassword = await hash(password, 6);
