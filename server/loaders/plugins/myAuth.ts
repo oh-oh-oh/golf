@@ -57,7 +57,7 @@ const myAuthPlugin: FastifyPluginCallback<MyAuthPluginOptions> = async (
         }
         req.user = undefined;
       } catch (err) {
-        console.log(err);
+        req.log.error(err);
       }
     },
   );

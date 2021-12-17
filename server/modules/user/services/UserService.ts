@@ -1,5 +1,5 @@
 import { User as PrismaUser } from '@prisma/client';
-import { ValidationError } from '../../../errors';
+import { ApiError, ValidationError } from '../../../errors';
 import { Service } from 'typedi';
 import { User } from '../models';
 import { UserRepository } from '../repository';
@@ -27,6 +27,18 @@ class UserService {
         message: 'Incorrect Password.',
       });
     return this.toDTO(user);
+  }
+
+  async register(username: string, password: string): Promise<User> {
+    const user = await this.userRepository.findByUsername(username);
+    if (user)
+      throw new ValidationError('', {
+        field: 'username',
+        message: 'Username taken.',
+      });
+    const savedUser = await this.userRepository.create(username, password);
+    if (!savedUser) throw new ApiError('User not created.');
+    return this.toDTO(savedUser);
   }
 
   private toDTO(user: PrismaUser): User {

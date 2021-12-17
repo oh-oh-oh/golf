@@ -1,4 +1,5 @@
 import { Prisma } from '@prisma/client';
+import { hash } from 'bcrypt';
 import { Service } from 'typedi';
 
 @Service()
@@ -10,12 +11,14 @@ class UserRepository {
   ) {}
 
   async create(username: string, password: string) {
-    await this.dbContext.create({
+    const hashedPassword = await hash(password, 6);
+    const createdUser = await this.dbContext.create({
       data: {
         username,
-        password,
+        password: hashedPassword,
       },
     });
+    return createdUser;
   }
 
   async findById(id: number) {

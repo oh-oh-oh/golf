@@ -86,7 +86,6 @@ export default async ({
     }),
     subscription: {
       onConnect: async ({ payload }) => {
-        console.log('ws connection');
         verify(payload.authentication, env.JWT_SECRET);
         return { isWebsocket: true };
       },
@@ -174,8 +173,6 @@ export default async ({
     const baseUrl = `${protocol}//${host}`;
     const graphqlUrl = `${baseUrl}/graphql`;
 
-    console.log('req user?', req.user)
-
     const result = await ssr({
       graphqlUrl,
       cookie: cookie!,
@@ -185,7 +182,6 @@ export default async ({
       userContext: req.user ?? null,
       wsJwt,
     });
-    // console.log('RESULT', result)
     res.code(200).type('text/html').send(result);
   });
 
