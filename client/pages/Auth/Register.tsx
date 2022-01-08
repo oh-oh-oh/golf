@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useState } from 'react';
-import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import { UserOutlined, LockOutlined, ThunderboltOutlined } from '@ant-design/icons';
 import { gql, useMutation } from '@apollo/client';
 import { Button, Form, FormItemProps, Input, message } from 'antd';
 import { useLocation, useNavigate } from 'react-router';
@@ -16,23 +16,30 @@ import { buttonLink } from './utils/buttonLink';
 
 type RegisterFormType = {
   username: string;
+  shortName: string;
   password: string;
 };
 
 type RegisterErrorsType = {
   username?: string;
+  shortName?: string;
   password?: string;
   general?: string;
 };
 
 const initForm: RegisterFormType = {
   username: '',
+  shortName: '',
   password: '',
 };
 
 const REGISTER_QUERY = gql`
-  mutation Register($username: String!, $password: String!) {
-    register(username: $username, password: $password)
+  mutation Register(
+    $username: String!
+    $shortName: String!
+    $password: String!
+  ) {
+    register(username: $username, shortName: $shortName, password: $password)
   }
 ` as RegisterDocument;
 
@@ -40,6 +47,7 @@ const Register: React.FC = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
 
+  const [values, setValues] = useState<RegisterErrorsType>(initForm);
   const [errors, setErrors] = useState<RegisterErrorsType>({});
   const [register, { loading }] = useMutation(REGISTER_QUERY, {
     onCompleted() {
@@ -58,15 +66,19 @@ const Register: React.FC = () => {
     },
   });
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setValues(prev => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
     setErrors(prev => ({
       ...prev,
       general: undefined,
-      [e.target.name]: e.target.value,
+      [e.target.name]: undefined,
     }));
   };
 
-  const onFinish = ({ username, password }: RegisterFormType) => {
-    register({ variables: { username, password } });
+  const onFinish = () => {
+    register({ variables: values });
   };
 
   const commonProps = (key: keyof RegisterFormType): FormItemProps => ({
@@ -78,7 +90,7 @@ const Register: React.FC = () => {
     <Wrapper>
       <StyledForm
         name="register"
-        onFinish={values => onFinish(values as RegisterFormType)}
+        onFinish={onFinish}
       >
         <Title>Register</Title>
         <Form.Item
@@ -88,9 +100,21 @@ const Register: React.FC = () => {
           <Input
             prefix={<UserOutlined />}
             placeholder="Username"
+            name='username'
             onChange={handleChange}
+            autoComplete='username'
           />
         </Form.Item>
+        {(values.shortName || errors.shortName) && (
+          <Form.Item {...commonProps('shortName')}>
+            <Input
+              prefix={<ThunderboltOutlined />}
+              placeholder="Max 6 Characters"
+              name='shortName'
+              onChange={handleChange}
+            />
+          </Form.Item>
+        )}
         <Form.Item
           {...commonProps('password')}
           rules={[{ required: true, message: 'Please input Password.' }]}
@@ -99,6 +123,7 @@ const Register: React.FC = () => {
             prefix={<LockOutlined />}
             type="password"
             placeholder="Password"
+            name='password'
             onChange={handleChange}
           />
         </Form.Item>

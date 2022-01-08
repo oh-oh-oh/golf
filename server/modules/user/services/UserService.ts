@@ -24,27 +24,39 @@ class UserService {
   async login(username: string, password: string): Promise<User> {
     const user = await this.userRepository.findByUsername(username);
     if (!user)
-      throw new ValidationError('', {
+      throw new ValidationError({
         field: 'username',
         message: 'Username not found.',
       });
     const valid = compareSync(password, user.password);
     if (!valid)
-      throw new ValidationError('', {
+      throw new ValidationError({
         field: 'password',
         message: 'Incorrect Password.',
       });
     return this.toDTO(user);
   }
 
-  async register(username: string, password: string): Promise<User> {
+  async register(username: string, shortName: string, password: string): Promise<User> {
     const user = await this.userRepository.findByUsername(username);
     if (user)
-      throw new ValidationError('', {
+      throw new ValidationError({
         field: 'username',
         message: 'Username taken.',
       });
-    const savedUser = await this.userRepository.create(username, password);
+    if (shortName.length > 6) {
+      throw new ValidationError({
+        field: 'shortName',
+        message: 'Short Name must be 6 or less characters.'
+      });
+    }
+    if (username.length > 6 && !shortName) {
+      throw new ValidationError({
+        field: 'shortName',
+        message: 'Username won\'t fit on score card, what should we put instead?.'
+      });
+    }
+    const savedUser = await this.userRepository.create(username, shortName, password);
     if (!savedUser) throw new ApiError('User not created.');
     return this.toDTO(savedUser);
   }

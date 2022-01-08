@@ -36,12 +36,13 @@ class UserMutationResolver {
   @Mutation(returns => Boolean)
   async register(
     @Arg('username') username: string,
+    @Arg('shortName') shortName: string,
     @Arg('password') password: string,
     @Ctx() { req, res, redis }: MyContext,
   ) {
     username = trimLower(username);
     password = trimLower(password);
-    const user = await this.userService.register(username, password);
+    const user = await this.userService.register(username, shortName, password);
     const redisKey = `gf:${user.id}:${user.username}`;
     try {
       res.setCookie('golf', sign(redisKey, env.JWT_SECRET));
