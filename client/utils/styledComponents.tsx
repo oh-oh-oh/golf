@@ -9,6 +9,7 @@ interface TitleProps {
   color?: Colors;
   bg?: Colors;
   fontWeight?: 'lighter' | 'normal' | 'bold' | 'bolder';
+  lineHeight?: string;
 }
 
 const Test: React.FC<TitleProps> = ({ type, children, ...props }) => {
@@ -34,4 +35,5 @@ export const Title = styled(Test)<TitleProps>`
   color: ${({ theme, color }) => theme.color[color || 'black']};
   text-transform: capitalize;
   font-weight: ${({ fontWeight }) => fontWeight || 'normal'};
+  line-height: ${({lineHeight}) => lineHeight || 1};
 `;

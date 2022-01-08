@@ -20,7 +20,7 @@ const Nine: React.FC<Props> = ({ first, name, color, par, hdc, idx }: Props) => 
   const { auth } = useAuthContext();
   return (
     <Wrapper first={Boolean(first)}>
-      <Title type="h3" color="black:200" bg={color} fontWeight="bolder">
+      <Title type="h3" color="black:200" bg={color} fontWeight="bolder" lineHeight='3'>
         {name}
       </Title>
       <Row name="HOLE" data={[]} />
