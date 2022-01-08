@@ -16,7 +16,7 @@ class UserMutationResolver {
   async login(
     @Arg('username') username: string,
     @Arg('password') password: string,
-    @Ctx() { res, redis }: MyContext,
+    @Ctx() { req, res, redis }: MyContext,
   ) {
     username = trimLower(username);
     password = trimLower(password);
@@ -26,7 +26,7 @@ class UserMutationResolver {
       res.setCookie('golf', sign(redisKey, env.JWT_SECRET));
       redis.set(redisKey, JSON.stringify(user));
     } catch (err) {
-      console.log(err);
+      req.log.error(err)
       res.clearCookie('golf');
       throw new ApiError(err.message);
     }
@@ -37,7 +37,7 @@ class UserMutationResolver {
   async register(
     @Arg('username') username: string,
     @Arg('password') password: string,
-    @Ctx() { res, redis }: MyContext,
+    @Ctx() { req, res, redis }: MyContext,
   ) {
     username = trimLower(username);
     password = trimLower(password);
@@ -61,7 +61,7 @@ class UserMutationResolver {
       res.clearCookie('golf');
       redis.del(redisKey);
     } catch (err) {
-      console.log(err);
+      req.log.error(err);
     }
     return true;
   }

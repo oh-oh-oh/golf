@@ -3,6 +3,24 @@
 # !!!   DO NOT MODIFY THIS FILE BY YOURSELF   !!!
 # -----------------------------------------------
 
+type Course {
+  data: [CourseNine!]!
+  id: Float!
+  name: String!
+}
+
+type CourseNine {
+  hdc: [Float!]!
+  id: Float!
+  name: String!
+  par: [Float!]!
+}
+
+"""
+The javascript `Date` as string. Type represents date and time as the ISO Date string.
+"""
+scalar DateTime
+
 type Mutation {
   login(password: String!, username: String!): Boolean!
   logout: Boolean!
@@ -10,6 +28,9 @@ type Mutation {
 }
 
 type Query {
+  course(courseId: Float!): Course
+  courses: [Course!]!
+  score(id: Float!): Score!
   user: User
   users: [User!]!
 }
@@ -19,8 +40,24 @@ enum Role {
   USER
 }
 
+type Score {
+  course: Course
+  courseId: Float!
+  data: [ScoreData!]!
+  date: DateTime!
+  id: Float!
+  user: User
+  userId: Float!
+}
+
+type ScoreData {
+  courseNineId: Float!
+  data: [Float!]!
+}
+
 type User {
   id: Float!
   role: Role!
+  shortName: String!
   username: String!
 }

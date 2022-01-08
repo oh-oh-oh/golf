@@ -18,6 +18,7 @@ import authentication from './plugins/authentication';
 import { ApiError, ValidationError } from '../errors';
 import { Services } from './service';
 import { AuthUser } from './plugins/myAuth';
+import loadDataLoaders from './dataLoaders';
 
 const locate = (...paths: string[]) => resolve(__dirname, ...paths);
 const isDev = env.NODE_ENV === 'development';
@@ -75,6 +76,8 @@ export default async ({
     },
   });
 
+  const dataLoaders = loadDataLoaders(services);
+
   app.register(mercurius, {
     schema: graphQLSchema,
     context: (req, res) => ({
@@ -82,7 +85,7 @@ export default async ({
       res,
       redis: redisClient,
       services,
-      // dataLoaders: loadDataLoader(services, req)
+      dataLoaders,
     }),
     subscription: {
       onConnect: async ({ payload }) => {
@@ -93,6 +96,7 @@ export default async ({
         req,
         res,
         services,
+        dataLoaders: loadDataLoaders(services),
       }),
     },
     allowBatchedQueries: true,

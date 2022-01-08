@@ -15,11 +15,99 @@ model User {
   createdAt          DateTime             @default(now())
   updatedAt          DateTime             @updatedAt
   username           String               @unique
+  shortName          String               @db.VarChar(6)               
   password           String
+  scores             WholeScore[]
   role               Role                 @default(USER)            
 }
 
 enum Role {
   USER
   ADMIN
+}
+
+model Course {
+  id                 Int         @id @default(autoincrement())
+  name               String      @unique
+  data               CourseNine[]
+  scores             WholeScore[]
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @updatedAt
+}
+
+model CourseNine {
+  id          Int       @id @default(autoincrement())
+  courseId    Int
+  course      Course    @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  name        String
+  par         Par?
+  hdc         Handicap?
+  scores      Score[]
+  createdAt   DateTime             @default(now())
+  updatedAt   DateTime             @updatedAt
+}
+
+model Par {
+  id              Int         @id @default(autoincrement())
+  courseNineId    Int
+  courseNine      CourseNine  @relation(fields: [courseNineId], references: [id], onDelete: Cascade)
+  one             Int
+  two             Int
+  three           Int
+  four            Int
+  five            Int
+  six             Int
+  seven           Int
+  eight           Int
+  nine            Int
+  createdAt       DateTime             @default(now())
+  updatedAt       DateTime             @updatedAt
+}
+
+model Handicap {
+  id              Int       @id @default(autoincrement())
+  courseNineId    Int
+  courseNine      CourseNine  @relation(fields: [courseNineId], references: [id], onDelete: Cascade)
+  one             Int
+  two             Int
+  three           Int
+  four            Int
+  five            Int
+  six             Int
+  seven           Int
+  eight           Int
+  nine            Int
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @updatedAt
+}
+
+model WholeScore {
+  id              Int                  @id @default(autoincrement())
+  courseId        Int
+  course          Course               @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  userId          Int
+  user            User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  data            Score[]
+  date            DateTime             @default(now())
+  createdAt       DateTime             @default(now())
+  updatedAt       DateTime             @updatedAt
+}
+
+model Score {
+  id              Int         @id @default(autoincrement())
+  wholeScoreId    Int
+  wholeScore      WholeScore  @relation(fields: [wholeScoreId], references: [id], onDelete: Cascade)
+  courseNineId    Int
+  courseNine      CourseNine  @relation(fields: [courseNineId], references: [id], onDelete: Cascade)
+  one             Int
+  two             Int
+  three           Int
+  four            Int
+  five            Int
+  six             Int
+  seven           Int
+  eight           Int
+  nine            Int
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
 }

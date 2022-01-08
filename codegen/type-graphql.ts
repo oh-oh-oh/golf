@@ -6,6 +6,8 @@ import type { TSTypeAnnotation, Identifier } from '@babel/types';
 import { formatCode } from './util';
 
 const files = [
+  '../server/modules/course/models/types.raw.ts',
+  '../server/modules/score/models/types.raw.ts',
   '../server/modules/user/models/types.raw.ts',
 ];
 

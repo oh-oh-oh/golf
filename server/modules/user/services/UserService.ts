@@ -2,15 +2,23 @@ import { User as PrismaUser } from '@prisma/client';
 import { ApiError, ValidationError } from '../../../errors';
 import { Service } from 'typedi';
 import { User } from '../models';
-import { UserRepository } from '../repository';
+import { UserRepository } from '../repositories';
 import { compareSync } from 'bcrypt';
 
 @Service()
 class UserService {
   constructor(private userRepository: UserRepository) {}
 
+  async findById(id: number): Promise<User> {
+    return await this.userRepository.findById(id);
+  }
+
   async find(): Promise<User> {
-    return { id: 1, username: 'tim', role: 'ADMIN' };
+    return { id: 1, username: 'tim', shortName: 'tim', role: 'ADMIN' };
+  }
+
+  async getByIds(ids: number[]): Promise<User[]> {
+    return this.userRepository.getByIds(ids);
   }
 
   async login(username: string, password: string): Promise<User> {
