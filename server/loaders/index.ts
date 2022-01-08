@@ -20,7 +20,7 @@ export default async ({ logger }: MainLoaderOption) => {
     // GRAPHQL PUBSUB??
 
     // PRISMA
-    const prisma = await prismaLoader();
+    const prisma = await prismaLoader(logger);
     logger.info('🚀 Prisma Client Loaded..');
 
     // REPOSITORIES

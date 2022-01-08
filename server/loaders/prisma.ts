@@ -1,12 +1,17 @@
 import { PrismaClient } from '@prisma/client';
 import { Logger } from 'pino';
+import { env } from '../config';
 
 const prismaLoader = (logger: Logger) => {
-  const prisma = new PrismaClient({ log: [{ emit: 'event', level: 'query' }] });
-  prisma.$on('query', e => {
-    console.log(e.query);
-    console.log(e.params);
-  });
+  if (env.NODE_ENV === 'development') {
+    const prismaDev = new PrismaClient({ log: [{ emit: 'event', level: 'query' }] });
+    prismaDev.$on('query', e => {
+      logger.debug(e.query);
+      logger.debug(e.params);
+    });
+    return prismaDev;
+  }
+  const prisma = new PrismaClient();
   return prisma;
 };
 
