@@ -1,11 +1,14 @@
 import { Theme } from '@emotion/react';
 import React from 'react';
 import { styled } from './styled';
+import { Colors } from './types';
 
 interface TitleProps {
   type?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
   textAlign?: 'center' | 'left' | 'right';
-  color?: keyof Theme['color'];
+  color?: Colors;
+  bg?: Colors;
+  fontWeight?: 'lighter' | 'normal' | 'bold' | 'bolder';
 }
 
 const Test: React.FC<TitleProps> = ({ type, children, ...props }) => {
@@ -27,6 +30,8 @@ const Test: React.FC<TitleProps> = ({ type, children, ...props }) => {
 
 export const Title = styled(Test)<TitleProps>`
   text-align: ${({ textAlign }) => textAlign || 'center'};
+  background-color: ${({ theme, bg }) => (bg ? theme.color[bg] : '')};
   color: ${({ theme, color }) => theme.color[color || 'black']};
   text-transform: capitalize;
+  font-weight: ${({ fontWeight }) => fontWeight || 'normal'};
 `;
