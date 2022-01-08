@@ -46,7 +46,6 @@
       "@/pages/*": ["client/pages/*"],
       "@/utils": ["client/utils"],
       "@/utils/*": ["client/utils/*"],
-      "@/server/*": ["server/*"],
     },
   },
   "include": ["server", "client", "./global.d.ts"],

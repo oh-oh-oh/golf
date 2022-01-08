@@ -1,5 +1,5 @@
-import { NotFoundError } from '@/server/errors';
-import { MyContext } from '@/server/utils/types';
+import { NotFoundError } from '../../../errors';
+import { MyContext } from '../../../utils';
 import { Arg, Ctx, FieldResolver, Query, Resolver, Root } from 'type-graphql';
 import { Inject } from 'typedi';
 import { Course } from '../../course/models';

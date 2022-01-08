@@ -1,10 +1,8 @@
-import { NotFoundError } from '@/server/errors';
-import { nineToArray } from '@/server/utils/nineToArray';
+import { NotFoundError } from '../../../errors';
+import { nineToArray } from '../../../utils';
 import {
-  Course,
   PrismaClient,
   Score as PrismaScore,
-  User,
   WholeScore,
 } from '@prisma/client';
 import { Service } from 'typedi';

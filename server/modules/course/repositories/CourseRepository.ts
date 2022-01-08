@@ -1,4 +1,4 @@
-import { nineToArray } from '@/server/utils/nineToArray';
+import { nineToArray } from '../../../utils';
 import {
   PrismaClient,
   Course as PrismaCourse,
