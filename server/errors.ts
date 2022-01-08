@@ -52,8 +52,8 @@ export class ValidationError extends ApiError {
   statusCode = StatusCode.BadRequest;
   validation: ValidationErrorType;
 
-  constructor(message: string, validation: ValidationErrorType) {
-    super(message);
+  constructor(validation: ValidationErrorType) {
+    super(`${validation.field}: ${validation.message}`);
     this.validation = validation;
   }
 }
