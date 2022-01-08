@@ -1,4 +1,4 @@
-import { PrismaClient, Role } from '@prisma/client';
+import { PrismaClient, Role, User } from '@prisma/client';
 import { hash } from 'bcrypt';
 
 const prisma = new PrismaClient();
@@ -10,13 +10,15 @@ async function seed() {
     await prisma.user.create({
       data: {
         username: 'albatrooss',
+        shortName: 'albtrs',
         password: await hash('password', 6),
         role: Role.ADMIN,
       },
     });
-    await prisma.user.create({
+    const { id: timId } = await prisma.user.create({
       data: {
         username: 'tim',
+        shortName: 'tim',
         password: await hash('password', 6),
         role: Role.USER,
       },
@@ -27,7 +29,7 @@ async function seed() {
         name: 'manderly on the green',
       },
     });
-    const north = await prisma.courseNine.create({
+    const { id: northId } = await prisma.courseNine.create({
       data: {
         name: 'north',
         courseId,
@@ -59,7 +61,7 @@ async function seed() {
         },
       },
     });
-    const central = await prisma.courseNine.create({
+    const { id: centralId } = await prisma.courseNine.create({
       data: {
         name: 'central',
         courseId,
@@ -122,6 +124,45 @@ async function seed() {
             nine: 8,
           },
         },
+      },
+    });
+
+    const { id: scoreId } = await prisma.wholeScore.create({
+      data: {
+        courseId,
+        userId: timId,
+        date: new Date(),
+      },
+    });
+
+    await prisma.score.create({
+      data: {
+        courseNineId: northId,
+        wholeScoreId: scoreId,
+        one: 6,
+        two: 5,
+        three: 5,
+        four: 4,
+        five: 5,
+        six: 5,
+        seven: 4,
+        eight: 5,
+        nine: 4,
+      },
+    });
+    await prisma.score.create({
+      data: {
+        courseNineId: centralId,
+        wholeScoreId: scoreId,
+        one: 6,
+        two: 4,
+        three: 5,
+        four: 3,
+        five: 6,
+        six: 4,
+        seven: 6,
+        eight: 5,
+        nine: 6,
       },
     });
   } catch (e) {

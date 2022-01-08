@@ -2,6 +2,8 @@
 CREATE TABLE "Course" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "Course_pkey" PRIMARY KEY ("id")
 );
@@ -11,6 +13,8 @@ CREATE TABLE "CourseNine" (
     "id" SERIAL NOT NULL,
     "courseId" INTEGER NOT NULL,
     "name" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,    
 
     CONSTRAINT "CourseNine_pkey" PRIMARY KEY ("id")
 );
@@ -28,6 +32,8 @@ CREATE TABLE "Par" (
     "seven" INTEGER NOT NULL,
     "eight" INTEGER NOT NULL,
     "nine" INTEGER NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "Par_pkey" PRIMARY KEY ("id")
 );
@@ -45,6 +51,8 @@ CREATE TABLE "Handicap" (
     "seven" INTEGER NOT NULL,
     "eight" INTEGER NOT NULL,
     "nine" INTEGER NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "Handicap_pkey" PRIMARY KEY ("id")
 );
