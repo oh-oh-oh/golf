@@ -15,9 +15,6 @@
     "useUnknownInCatchVariables": false,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "paths": {
-      "@/server/*": ["*"],
-    },
     "plugins": [
       {
         "transform": "../scripts/inject-type.ts",

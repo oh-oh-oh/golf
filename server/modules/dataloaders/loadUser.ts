@@ -1,4 +1,4 @@
-import { batchFetchEntitiesById } from '@/server/utils/batchFetchEntitiesById';
+import { batchFetchEntitiesById } from '../../utils';
 import DataLoader from 'dataloader';
 import { User } from '../user/models';
 import UserService from '../user/services/UserService';

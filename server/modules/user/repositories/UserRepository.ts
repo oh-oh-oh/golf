@@ -1,4 +1,4 @@
-import { NotFoundError } from '@/server/errors';
+import { NotFoundError } from '../../../errors';
 import { PrismaClient } from '@prisma/client';
 import { hash } from 'bcrypt';
 import { Service } from 'typedi';
@@ -32,7 +32,7 @@ class UserRepository {
         role: true,
       },
     });
-    if (!user) throw new NotFoundError('User not found.')
+    if (!user) throw new NotFoundError('User not found.');
     return user;
   }
 
@@ -40,7 +40,7 @@ class UserRepository {
     const users = await this.dbContext.findMany({
       where: {
         id: {
-          in: ids
+          in: ids,
         },
       },
       select: {

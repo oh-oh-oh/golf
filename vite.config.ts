@@ -16,7 +16,6 @@ export default defineConfig({
       '@/hooks': resolve(__dirname, './client/hooks'),
       '@/pages': resolve(__dirname, './client/pages'),
       '@/utils': resolve(__dirname, './client/utils'),
-      '@/server': resolve(__dirname, './client/server'),
     },
   },
   esbuild: {
