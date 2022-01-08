@@ -5,11 +5,11 @@ import CourseTable from './CourseTable';
 import CourseModal from '@/components/CourseModal';
 
 const CourseList: React.FC = () => {
-  const { selected } = useCourseContext();
+  const { selected, setSelected } = useCourseContext();
   return (
     <Wrapper>
       <CourseTable />
-      {selected && <CourseModal name={selected.name} data={selected.data} />}
+      {selected && <CourseModal name={selected.name} data={selected.data} closeFn={() => setSelected(null)} />}
     </Wrapper>
   );
 };

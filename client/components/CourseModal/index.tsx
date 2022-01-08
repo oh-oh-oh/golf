@@ -1,51 +1,49 @@
 import React from 'react';
+import { CloseOutlined } from '@ant-design/icons';
 import { styled } from '@/utils/styled';
 import { Title } from '@/utils/styledComponents';
-import Nine from './Nine';
+import CourseCarousel from './Carousel';
 import { Course } from '@/contexts';
-
+import { Modal } from 'antd';
+import { theme } from '@/utils/theme';
 interface Props {
   name: string;
-  data: Course['data']
+  data: Course['data'];
+  closeFn: () => void;
 }
 
-const CourseModal: React.FC<Props> = ({ name, data }: Props) => {
+const CourseModal: React.FC<Props> = ({ name, data, closeFn }: Props) => {
   return (
-    <Wrapper>
-      <Container>
-        <Title type="h2" color="white">
-          {name}
-        </Title>
-        <DataWrapper>
-          {data.map((data, i) => (
-            <Nine {...data} first={i === 0}/>
-          ))}
-        </DataWrapper>
-      </Container>
-    </Wrapper>
+    <Modal
+      visible
+      onCancel={closeFn}
+      footer={null}
+      width={1000}
+      bodyStyle={{ backgroundColor: theme.color['black:200'] }}
+      closeIcon={<StyledClose />}
+    >
+      <Title type="h2" color="white">
+        {name}
+      </Title>
+      <CourseCarousel data={data} />
+    </Modal>
   );
 };
 export default CourseModal;
 
-const Wrapper = styled.div`
-  position: fixed;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
+const StyledClose = styled(CloseOutlined)`
+  position: absolute;
+  top: 0.6rem;
+  right: 0.6rem;
+  color: white;
+  font-size: 1.2rem;
+  font-weight: bolder;
+  cursor: pointer; 
+  transition: all 150ms ease; 
 
-const Container = styled.div`
-  background: ${({ theme }) => theme.color['black:200']};
-  width: min(1000px, 100%);
-  padding: 1rem;
-`;
-
-const DataWrapper = styled.div`
-  display: flex;
-  width: 100%;
-  flex-gap: 1rem;
+  &:hover {
+    font-size: 1.4rem;
+    top: 0.4rem
+    right: 0.4rem
+  }
 `;

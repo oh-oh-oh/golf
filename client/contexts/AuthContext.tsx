@@ -7,6 +7,7 @@ export type AuthContextType = {
   auth: {
     id: number;
     username: string;
+    shortName: string;
     role: Role;
   } | null;
   logout(): void;

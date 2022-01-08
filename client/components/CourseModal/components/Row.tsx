@@ -1,5 +1,6 @@
+import { Colors } from '@/utils/types';
 import React from 'react';
-import { styled } from '@/utils/styled';
+import { RowData, RowTitle, RowWrapper } from './styled';
 
 interface Props {
   name: string;
@@ -7,29 +8,33 @@ interface Props {
 }
 
 const Row: React.FC<Props> = ({ name, data }: Props) => {
-  return <Wrapper>
-    <Title>{name}</Title>
-    {data.map(d => <Data>{d}</Data>)}
-  </Wrapper>;
+  let color: Colors = 'black';
+  switch (name) {
+    case 'PAR':
+      color = 'orange';
+      break;
+    case 'HDC':
+      color = 'yellow';
+      break;
+    default:
+      color = 'black';
+  }
+  const holeRow = !data.length;
+  const total = name === 'PAR' ? data.reduce((a, b) => a + b, 0) : 'TOT';
+  return (
+    <RowWrapper>
+      <RowTitle color={color} text={holeRow ? 'white' : 'black'}>
+        {name}
+      </RowTitle>
+      {(!holeRow ? data : [1, 2, 3, 4, 5, 6, 7, 8, 9]).map((d, i) => (
+        <RowData key={i} color={color} text={holeRow ? 'white' : 'black'}>
+          {d}
+        </RowData>
+      ))}
+      <RowData color={color} text={holeRow ? 'white' : 'black'}>
+        {name === 'HDC' ? '' : total}
+      </RowData>
+    </RowWrapper>
+  );
 };
 export default Row;
-
-const Wrapper = styled.div`
-  display: flex;
-  margin-bottom: 3px;
-`;
-const Title = styled.div`
-  flex: 2;
-  background-color: ${({theme}) => theme.color.white};
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  `;
-const Data = styled.div`
-  flex: 1;
-  background-color: ${({theme}) => theme.color['white:0']};
-  margin-left: 1px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;

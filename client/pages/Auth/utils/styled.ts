@@ -9,7 +9,7 @@ export const StyledForm = styled(Form)`
   margin-top: 2rem;
   width: min(700px, 100%);
   background-color: ${({ theme }) => theme.color['white:0']};
-  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: ${({theme}) => theme.boxShadow};
   padding: 2rem 4rem;
 `;
 
