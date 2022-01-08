@@ -6,11 +6,20 @@ import { buildSchema, NonEmptyArray } from 'type-graphql';
 import { env } from '../config';
 
 import { CourseQueryResolver } from '../modules/course/resolvers';
-import { UserMutationResolver, UserQueryResolver } from '../modules/user/resolvers';
+import { ScoreQueryResolver } from '../modules/score/resolvers';
+import {
+  UserMutationResolver,
+  UserQueryResolver,
+} from '../modules/user/resolvers';
 
 export default async () => {
   const schema = await buildSchema({
-    resolvers: getResolvers([CourseQueryResolver, UserQueryResolver, UserMutationResolver]),
+    resolvers: getResolvers([
+      CourseQueryResolver,
+      ScoreQueryResolver,
+      UserQueryResolver,
+      UserMutationResolver,
+    ]),
     dateScalarMode: 'isoDate',
     emitSchemaFile: env.NODE_ENV === 'development' && {
       path: resolve(__dirname, '../schema.gql'),

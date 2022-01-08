@@ -1,6 +1,7 @@
 import { Container } from 'typedi';
 import { PrismaClient } from '.prisma/client';
 import { CourseRepository } from '../modules/course/repositories';
+import { ScoreRepository } from '../modules/score/repositories';
 import { UserRepository } from '../modules/user/repositories';
 
 type RepositoryLoaderArg = {
@@ -20,6 +21,7 @@ const repositoryLoader = ({ prisma }: RepositoryLoaderArg) => {
   };
   return {
     CourseRepository: create(CourseRepository, [prisma.course]),
+    ScoreRepository: create(ScoreRepository, [prisma.wholeScore]),
     UserRepository: create(UserRepository, [prisma.user]),
   };
 };

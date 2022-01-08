@@ -8,5 +8,6 @@ export { Role };
 class User {
   id!: number;
   username!: string;
+  shortName!: string;
   role!: Role;
 }

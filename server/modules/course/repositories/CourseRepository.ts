@@ -1,3 +1,4 @@
+import { nineToArray } from '@/server/utils/nineToArray';
 import {
   PrismaClient,
   Course as PrismaCourse,
@@ -14,18 +15,6 @@ type RawCourse = PrismaCourse & {
     par: Par | null;
     hdc: Handicap | null;
   })[];
-};
-
-type RawNine = {
-  one: number;
-  two: number;
-  three: number;
-  four: number;
-  five: number;
-  six: number;
-  seven: number;
-  eight: number;
-  nine: number;
 };
 
 @Service()
@@ -61,8 +50,25 @@ class CourseRepository {
         },
       },
     });
-    if (!courses) return [];
-    console.log('COURSES', courses);
+    return courses.map(this.toDTO);
+  }
+
+  async getByIds(ids: number[]): Promise<Course[]> {
+    const courses = await this.dbContext.findMany({
+      where: {
+        id: {
+          in: ids
+        }
+      },
+      include: {
+        data: {
+          include: {
+            par: true,
+            hdc: true,
+          },
+        },
+      },
+    });
     return courses.map(this.toDTO);
   }
 
@@ -72,32 +78,10 @@ class CourseRepository {
     data: data.map(({ id, name, par, hdc }) => ({
       id,
       name,
-      par: this.combineNine(par),
-      hdc: this.combineNine(hdc),
+      par: nineToArray(par),
+      hdc: nineToArray(hdc),
     })),
   });
-
-  private combineNine = ({
-    one,
-    two,
-    three,
-    four,
-    five,
-    six,
-    seven,
-    eight,
-    nine,
-  }: any & RawNine): Array<number> => [
-    one,
-    two,
-    three,
-    four,
-    five,
-    six,
-    seven,
-    eight,
-    nine,
-  ];
 }
 
 export default CourseRepository;

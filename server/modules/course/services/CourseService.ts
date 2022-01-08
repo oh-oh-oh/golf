@@ -15,6 +15,12 @@ class CourseService {
     const courses = await this.courseRepository.find();
     return courses;
   }
+
+
+  async getByIds(ids: number[]): Promise<Course[]> {
+    const courses = await this.courseRepository.getByIds(ids);
+    return courses;
+  }
 }
 
 export default CourseService;

@@ -1,5 +1,6 @@
 import Container from 'typedi';
 import CourseService from '../modules/course/services/CourseService';
+import ScoreService from '../modules/score/services/ScoreService';
 import UserService from '../modules/user/services/UserService';
 import { Repositories } from './repository';
 
@@ -9,7 +10,7 @@ interface ServiceLoaderInjectable {
 }
 const serviceLoader = ({
   Container,
-  repositories: { CourseRepository, UserRepository },
+  repositories: { CourseRepository, ScoreRepository, UserRepository },
 }: ServiceLoaderInjectable) => {
   const create = <T, R extends unknown[]>(
     Class: new (...args: R) => T,
@@ -21,9 +22,11 @@ const serviceLoader = ({
   };
 
   const CourseServiceInstance = create(CourseService, [CourseRepository]);
+  const ScoreServiceInstance = create(ScoreService, [ScoreRepository]);
   const UserServiceInstance = create(UserService, [UserRepository]);
   return {
     CourseService: CourseServiceInstance,
+    ScoreService: ScoreServiceInstance,
     UserService: UserServiceInstance,
   };
 };
