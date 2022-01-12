@@ -1,20 +1,17 @@
-import { nineToArray } from '../../../utils';
-import {
-  PrismaClient,
-  Course as PrismaCourse,
-  CourseNine,
-  Par,
-  Handicap,
-} from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 import { Service } from 'typedi';
 import { NotFoundError } from '../../../errors';
 import { Course } from '../models';
 
-type RawCourse = PrismaCourse & {
-  data: (CourseNine & {
-    par: Par | null;
-    hdc: Handicap | null;
-  })[];
+const include = {
+  data: {
+    select: {
+      id: true,
+      name: true,
+      par: true,
+      hdc: true,
+    },
+  },
 };
 
 @Service()
@@ -26,62 +23,30 @@ class CourseRepository {
       where: {
         id,
       },
-      include: {
-        data: {
-          include: {
-            par: true,
-            hdc: true,
-          },
-        },
-      },
+      include,
     });
     if (!course) throw new NotFoundError('Course not found.');
-    return this.toDTO(course);
+    return course;
   }
 
   async find(): Promise<Course[]> {
     const courses = await this.dbContext.findMany({
-      include: {
-        data: {
-          include: {
-            par: true,
-            hdc: true,
-          },
-        },
-      },
+      include,
     });
-    return courses.map(this.toDTO);
+    return courses;
   }
 
   async getByIds(ids: number[]): Promise<Course[]> {
     const courses = await this.dbContext.findMany({
       where: {
         id: {
-          in: ids
-        }
-      },
-      include: {
-        data: {
-          include: {
-            par: true,
-            hdc: true,
-          },
+          in: ids,
         },
       },
+      include,
     });
-    return courses.map(this.toDTO);
+    return courses;
   }
-
-  private toDTO = ({ id, name, data }: RawCourse): Course => ({
-    id,
-    name,
-    data: data.map(({ id, name, par, hdc }) => ({
-      id,
-      name,
-      par: nineToArray(par),
-      hdc: nineToArray(hdc),
-    })),
-  });
 }
 
 export default CourseRepository;

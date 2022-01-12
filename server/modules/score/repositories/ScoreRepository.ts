@@ -1,12 +1,16 @@
 import { NotFoundError } from '../../../errors';
-import { nineToArray } from '../../../utils';
-import {
-  PrismaClient,
-  Score as PrismaScore,
-  WholeScore,
-} from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 import { Service } from 'typedi';
 import { Score } from '../models';
+
+const include = {
+  data: {
+    select: {
+      courseNineId: true,
+      data: true,
+    },
+  },
+};
 
 @Service()
 class ScoreRepository {
@@ -21,40 +25,18 @@ class ScoreRepository {
       where: {
         id,
       },
-      include: {
-        data: true,
-      },
+      include,
     });
     if (!score) throw new NotFoundError(`Score Not Found. ID: ${id}`);
 
-    return this.toDTO(score);
+    return score;
   }
 
   find = async (): Promise<Score[]> => {
     const scores = await this.dbContext.findMany({
-      include: {
-        data: true,
-      }
+      include,
     });
-    return scores.map(this.toDTO);
-  };
-
-  private toDTO = (
-    { id, courseId, data, date, userId }:
-      WholeScore & {
-        data: PrismaScore[];
-      },
-  ): Score => {
-    return {
-      id,
-      userId,
-      courseId,
-      date,
-      data: data.map((r: any) => ({
-        courseNineId: r.id,
-        data: nineToArray(r),
-      })),
-    };
+    return scores;
   };
 }
 
