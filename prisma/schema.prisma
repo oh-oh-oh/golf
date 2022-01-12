@@ -40,45 +40,11 @@ model CourseNine {
   courseId    Int
   course      Course    @relation(fields: [courseId], references: [id], onDelete: Cascade)
   name        String
-  par         Par?
-  hdc         Handicap?
+  par         Int[]
+  hdc         Int[]
   scores      Score[]
   createdAt   DateTime             @default(now())
   updatedAt   DateTime             @updatedAt
-}
-
-model Par {
-  id              Int         @id @default(autoincrement())
-  courseNineId    Int
-  courseNine      CourseNine  @relation(fields: [courseNineId], references: [id], onDelete: Cascade)
-  one             Int
-  two             Int
-  three           Int
-  four            Int
-  five            Int
-  six             Int
-  seven           Int
-  eight           Int
-  nine            Int
-  createdAt       DateTime             @default(now())
-  updatedAt       DateTime             @updatedAt
-}
-
-model Handicap {
-  id              Int       @id @default(autoincrement())
-  courseNineId    Int
-  courseNine      CourseNine  @relation(fields: [courseNineId], references: [id], onDelete: Cascade)
-  one             Int
-  two             Int
-  three           Int
-  four            Int
-  five            Int
-  six             Int
-  seven           Int
-  eight           Int
-  nine            Int
-  createdAt          DateTime             @default(now())
-  updatedAt          DateTime             @updatedAt
 }
 
 model WholeScore {
@@ -99,15 +65,7 @@ model Score {
   wholeScore      WholeScore  @relation(fields: [wholeScoreId], references: [id], onDelete: Cascade)
   courseNineId    Int
   courseNine      CourseNine  @relation(fields: [courseNineId], references: [id], onDelete: Cascade)
-  one             Int
-  two             Int
-  three           Int
-  four            Int
-  five            Int
-  six             Int
-  seven           Int
-  eight           Int
-  nine            Int
+  data            Int[]
   createdAt       DateTime      @default(now())
   updatedAt       DateTime      @updatedAt
 }
